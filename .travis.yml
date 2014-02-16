@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - '0.10'
+before_install:
+  - currentfolder=${PWD##*/}
+  - if [ "$currentfolder" != 'generator-spring-boot-groovy' ]; then cd .. && eval "mv $currentfolder generator-spring-boot-groovy" && cd generator-spring-boot-groovy; fi
+

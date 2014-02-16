@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenCentral()
+        mavenLocal()
+        ivy { url "http://dl.bintray.com/jarias/gradle-plugins" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:<%= springBootVersion %>")
+        classpath("jarias.gradle:liquibase-gradle-plugin:1.0.0")
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'liquibase'
+
+jar {
+    baseName = '<%= projectName %>'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:<%= springBootVersion %>")
+    compile("org.springframework.boot:spring-boot-starter-actuator:<%= springBootVersion %>")
+    compile("org.springframework.boot:spring-boot-starter-jdbc:<%= springBootVersion %>")
+    compile("commons-io:commons-io:2.4")
+    compile("commons-codec:commons-codec:1.8")
+    compile("org.codehaus.groovy:groovy-all:2.1.9")
+    compile("org.jumpmind.symmetric.jdbc:mariadb-java-client:1.1.1")
+    compile("postgresql:postgresql:9.1-901.jdbc4")
+    compile("com.mandrillapp.wrapper.lutung:lutung:0.0.3-SNAPSHOT")
+    compile("org.springframework.boot:spring-boot-starter-amqp:<%= springBootVersion %>")
+    runtime("org.apache.httpcomponents:httpcore:4.3")
+    runtime("org.apache.httpcomponents:httpclient:4.3.1")
+    runtime("com.google.code.gson:gson:2.2.4")
+    testCompile("junit:junit:4.11")
+    liquibase("org.jumpmind.symmetric.jdbc:mariadb-java-client:1.1.1")
+    liquibase("postgresql:postgresql:9.1-901.jdbc4")
+}
+
+liquibase {
+    jdbcUrl = "jdbc:postgresql://localhost/<%= dbName %>"
+    jdbcDriverClassName = "org.postgresql.Driver"
+    jdbcUsername = "<%= dbUsername %>"
+    jdbcPassword = "<%= dbPassword %>"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
+}
